@@ -4,7 +4,7 @@ const vocabulary = [{
     words: {
       Monday: 'Lendi',
       Tuesday: 'Madi',
-      Wednesday: 'Mekredi',
+      Wednesday: 'Mèkredi',
       Thursday: 'Jedi',
       Friday: 'Vandredi',
       Saturday: 'Samdi',
@@ -16,16 +16,16 @@ const vocabulary = [{
     className: 'food',
     words: {
       bacon: 'bekonn',
-      beef: 'bef',
+      beef: 'bèf',
       chicken: 'poul',
       goat: 'kabrit',
       ham: 'janbon',
-      hamburger: 'anbege',
+      hamburger: 'anbègè',
       lime: 'sitwon',
       lettuce: 'leti',
       peanut: 'pistach',
       pineapple: 'zannanna',
-      popcorn: 'mayi pepet',
+      popcorn: 'mayi pèpèt',
       melon: 'melon',
       avocado: 'zaboka',
       fruit: 'fwi'
@@ -42,8 +42,8 @@ const vocabulary = [{
       parents: 'papa ak manman',
       child: 'timoun',
       relative: 'paran',
-      brother: 'fre',
-      sister: 'se',
+      brother: 'frè',
+      sister: 'sè',
       uncle: 'tonton',
       aunt: 'matant',
       grandfather: 'granpapa',
@@ -51,7 +51,7 @@ const vocabulary = [{
       cousin_m: 'kouzen (m)',
       cousin_f: 'kouzin (f)',
       nephew: 'neve',
-      niece: 'nyes'
+      niece: 'nyès'
     }
   }
 ];
@@ -80,7 +80,7 @@ class Categories {
       categoryBtn = document.createElement('div');
       categoryBtn.classList.add('vocabulary__category', this._categories[i]);
 
-      categoryBtn.innerHTML = this._categories[i]
+      categoryBtn.innerHTML = this._categories[i];
       categoryWrapper.appendChild(categoryBtn);
     }
   }
@@ -95,6 +95,7 @@ class VocabularyCards {
     this._vocabText;
     this._lastK;
     this._firstK;
+    this._vocabCard;
   }
 
   parseData() {
@@ -105,27 +106,35 @@ class VocabularyCards {
       }
     }
     this._lastK = this._kreyol[this._kreyol.length - 1];
-    this._firstK = this._kreyol[this._kreyol.length - 1];
+    this._firstK = this._kreyol[0];
   }
 
-  makeCards(counter) {
+  makeCards() {
     let vocabCard, vocabText;
-    const vocabWrapper = document.getElementById('vocabulary__wrapper');
-
+    let lastChild = vocabWrapper.childNodes.length - 1;
     this.parseData();
 
-    vocabCard = document.createElement('div');
-    vocabText = document.createElement('div');
+    prevBtn.disabled = true;
 
-    vocabCard.classList.add('vocabulary__card');
-    vocabText.classList.add('vocabulary__text');
+    if (vocabWrapper.classList.contains('hide')) {
+      vocabWrapper.classList.remove('hide');
+      vocabWrapper.classList.add('show');
+    }
 
-    vocabText.innerHTML = this._kreyol[counter];
+    for (let i = 0; i < 1; i++) {
+      vocabCard = document.createElement('div');
+      vocabText = document.createElement('div');
 
-    vocabCard.appendChild(vocabText);
-    vocabWrapper.appendChild(vocabCard);
+      vocabCard.classList.add('vocabulary__card');
+      vocabText.classList.add('vocabulary__text');
 
+      vocabText.innerHTML = this._kreyol[i];
+
+      vocabCard.appendChild(vocabText);
+      vocabWrapper.appendChild(vocabCard);
+    }
     this._vocabText = document.getElementsByClassName('vocabulary__text')[0];
+    this._vocabCard = document.getElementsByClassName('vocabulary__card')[0];
   }
 
   showTranslation(counter) {
@@ -151,7 +160,7 @@ class VocabularyCards {
     this._vocabText.innerHTML = this._kreyol[counter];
     nextBtn.disabled = false;
 
-    if (this._kreyol[counter] === this._kreyol[0]) {
+    if (this._kreyol[counter] === this._firstK) {
       prevBtn.setAttribute('disabled', 'disabled');
     }
   }
@@ -162,7 +171,11 @@ class VocabularyCards {
 
     categoryWrapper.classList.add('show');
     categoryWrapper.classList.remove('hide');
-    console.log('hello');
+
+    exitBtn.classList.add('hide');
+    exitBtn.classList.remove('show');
+
+    this._vocabCard.remove();
   }
 }
 
@@ -182,6 +195,7 @@ cat.renderCategoryButtons();
 categoryWrapper.classList.add('show');
 nextBtn.classList.add('hide');
 prevBtn.classList.add('hide');
+exitBtn.classList.add('hide');
 
 document.addEventListener('click', function(e) {
   let target = e.target;
@@ -193,7 +207,7 @@ document.addEventListener('click', function(e) {
 
       vocabWrapper.classList.add('show');
       card = new VocabularyCards(vocabulary, 'days');
-      card.makeCards(counter);
+      card.makeCards();
     } else if (target.classList.contains('food')) {
       categoryWrapper.classList.add('hide');
       categoryWrapper.classList.remove('show');
@@ -201,7 +215,7 @@ document.addEventListener('click', function(e) {
 
       vocabWrapper.classList.add('show');
       card = new VocabularyCards(vocabulary, 'food');
-      card.makeCards(counter);
+      card.makeCards();
     } else {
       categoryWrapper.classList.add('hide');
       categoryWrapper.classList.remove('show');
@@ -209,14 +223,17 @@ document.addEventListener('click', function(e) {
 
       vocabWrapper.classList.add('show');
       card = new VocabularyCards(vocabulary, 'family');
-      card.makeCards(counter);
+      card.makeCards();
     }
 
     nextBtn.classList.remove('hide');
     prevBtn.classList.remove('hide');
+    exitBtn.classList.remove('hide');
 
     nextBtn.classList.add('show');
     prevBtn.classList.add('show');
+    exitBtn.classList.add('show');
+
   }
 
   if (target.classList.contains('vocabulary__card') || target.classList.contains('vocabulary__text')) {
@@ -226,10 +243,12 @@ document.addEventListener('click', function(e) {
   if (target.id && target.id === 'next') {
     ++counter;
     card.nextCard(counter);
-  } else if (target.id && target.id === 'prev') {
+  }
+  if (target.id && target.id === 'prev') {
     --counter;
     card.prevCard(counter);
-  } else if (target.id && target.id === 'exit') {
+  }
+  if (target.id && target.id === 'exit') {
     card.backToMenu();
   }
 }, false);
