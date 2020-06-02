@@ -93,6 +93,8 @@ class VocabularyCards {
     this._english = [];
     this._kreyol = [];
     this._vocabText;
+    this._lastK;
+    this._firstK;
   }
 
   parseData() {
@@ -102,26 +104,27 @@ class VocabularyCards {
         this._kreyol = Object.values(this._vocabulary[index].words);
       }
     }
+    this._lastK = this._kreyol[this._kreyol.length - 1];
+    this._firstK = this._kreyol[this._kreyol.length - 1];
   }
 
-  makeCards() {
+  makeCards(counter) {
     let vocabCard, vocabText;
     const vocabWrapper = document.getElementById('vocabulary__wrapper');
 
     this.parseData();
 
-    for (let i = 0; i < 1; i++) {
-      vocabCard = document.createElement('div');
-      vocabText = document.createElement('div');
+    vocabCard = document.createElement('div');
+    vocabText = document.createElement('div');
 
-      vocabCard.classList.add('vocabulary__card');
-      vocabText.classList.add('vocabulary__text');
+    vocabCard.classList.add('vocabulary__card');
+    vocabText.classList.add('vocabulary__text');
 
-      vocabText.innerHTML = this._kreyol[i];
+    vocabText.innerHTML = this._kreyol[counter];
 
-      vocabCard.appendChild(vocabText);
-      vocabWrapper.appendChild(vocabCard);
-    }
+    vocabCard.appendChild(vocabText);
+    vocabWrapper.appendChild(vocabCard);
+
     this._vocabText = document.getElementsByClassName('vocabulary__text')[0];
   }
 
@@ -136,27 +139,39 @@ class VocabularyCards {
   }
 
   nextCard(counter) {
-    if (counter < this._kreyol.length) {
-      this._vocabText.innerHTML = this._kreyol[counter++];
-    } else {
-      counter = this._kreyol.length;
+    this._vocabText.innerHTML = this._kreyol[counter];
+    prevBtn.disabled = false;
+
+    if (this._kreyol[counter] === this._lastK) {
+      nextBtn.setAttribute('disabled', 'disabled');
     }
   }
 
   prevCard(counter) {
-    if (counter >= 0) {
-      this._vocabText.innerHTML = this._kreyol[counter--];
-    } else {
-      counter = 0;
+    this._vocabText.innerHTML = this._kreyol[counter];
+    nextBtn.disabled = false;
+
+    if (this._kreyol[counter] === this._kreyol[0]) {
+      prevBtn.setAttribute('disabled', 'disabled');
     }
   }
-}
 
+  backToMenu() {
+    vocabWrapper.classList.remove('show');
+    vocabWrapper.classList.add('hide');
+
+    categoryWrapper.classList.add('show');
+    categoryWrapper.classList.remove('hide');
+    console.log('hello');
+  }
+}
 
 /*render card category on click */
 const categoryWrapper = document.getElementById('vocabulary__category-wrapper');
 const vocabWrapper = document.getElementById('vocabulary__wrapper');
 const nextBtn = document.getElementById('next');
+const prevBtn = document.getElementById('prev');
+const exitBtn = document.getElementById('exit');
 const body = document.getElementsByTagName('body')[0];
 let card;
 let counter = 0;
@@ -165,10 +180,12 @@ let cat = new Categories(vocabulary);
 cat.renderCategoryButtons();
 
 categoryWrapper.classList.add('show');
+nextBtn.classList.add('hide');
+prevBtn.classList.add('hide');
 
 document.addEventListener('click', function(e) {
   let target = e.target;
-  if (categoryWrapper.classList.contains('show')) {
+  if (categoryWrapper.classList.contains('show') && target.classList.contains('vocabulary__category')) {
     if (target.classList.contains('days')) {
       categoryWrapper.classList.add('hide');
       categoryWrapper.classList.remove('show');
@@ -176,7 +193,7 @@ document.addEventListener('click', function(e) {
 
       vocabWrapper.classList.add('show');
       card = new VocabularyCards(vocabulary, 'days');
-      card.makeCards();
+      card.makeCards(counter);
     } else if (target.classList.contains('food')) {
       categoryWrapper.classList.add('hide');
       categoryWrapper.classList.remove('show');
@@ -184,7 +201,7 @@ document.addEventListener('click', function(e) {
 
       vocabWrapper.classList.add('show');
       card = new VocabularyCards(vocabulary, 'food');
-      card.makeCards();
+      card.makeCards(counter);
     } else {
       categoryWrapper.classList.add('hide');
       categoryWrapper.classList.remove('show');
@@ -192,8 +209,14 @@ document.addEventListener('click', function(e) {
 
       vocabWrapper.classList.add('show');
       card = new VocabularyCards(vocabulary, 'family');
-      card.makeCards();
+      card.makeCards(counter);
     }
+
+    nextBtn.classList.remove('hide');
+    prevBtn.classList.remove('hide');
+
+    nextBtn.classList.add('show');
+    prevBtn.classList.add('show');
   }
 
   if (target.classList.contains('vocabulary__card') || target.classList.contains('vocabulary__text')) {
@@ -201,14 +224,12 @@ document.addEventListener('click', function(e) {
   }
 
   if (target.id && target.id === 'next') {
-    counter++;
+    ++counter;
     card.nextCard(counter);
   } else if (target.id && target.id === 'prev') {
-    counter--;
+    --counter;
     card.prevCard(counter);
-    if (counter < 0) {
-      counter = 0;
-    }
+  } else if (target.id && target.id === 'exit') {
+    card.backToMenu();
   }
-
 }, false);

@@ -37,7 +37,9 @@ h1 {
 }
 
 #vocabulary__wrapper {
-  width: 100%;
+  width: 800px;
+  position: relative;
+  margin:auto;
 }
 
 .show {
@@ -49,7 +51,7 @@ h1 {
 }
 
 .vocabulary__card {
-  border: 2px solid #ff7400;
+  border: 4px solid #ff7400;
   height: 250px;
   width: 450px;
   margin: auto;
@@ -65,22 +67,26 @@ h1 {
   font-size: 3rem;
 }
 
-#next, #prev {
+#next, #prev,#exit {
   height: 50px;
   width: 100px;
   border: 2px solid #ff7400;
   cursor: pointer;
-  /* position: absolute; */
-  top: 50%;
-  display: flex;
-  justify-content: center;
+  position: absolute;
   line-height: 50px;
+  border-radius: 5px;
+  background: #fff;
 }
 
-#next {
-  /* left:80%; */
+#next, #prev{
+  left:80%;
+  top: 50%;
+}
+
+#next{
+  left:80%;
 }
 
 #prev {
-  /* left:200px; */
+  left:8%;
 }
