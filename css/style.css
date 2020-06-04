@@ -32,9 +32,10 @@ body, html {
 
 .info {
   width: 50%;
-  margin:auto;
+  margin: auto;
   list-style: none;
   font-size: 1.2rem;
+  text-align: center;
 }
 
 #vocabulary__wrapper {
@@ -113,10 +114,11 @@ h1 {
   margin-left: 10px;
 }
 
-@media only screen
-  and (min-device-width: 320px)
-  and (max-device-width: 480px)
-  and (-webkit-min-device-pixel-ratio: 2) {
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+  body,html{
+    overflow-x: hidden;
+  }
+
   .vocabulary__category {
     width: 80%;
     height: 175px;
@@ -137,7 +139,7 @@ h1 {
 
   .vocabulary__card {
     border: 4px solid #ff7400;
-    height: 400px;
+    height: 300px;
     width: 80%;
     border-radius: 20px;
   }
