@@ -126,6 +126,7 @@ class VocabularyCards {
     this.parseData();
 
     prevBtn.disabled = true;
+    nextBtn.disabled = false;
 
     if (vocabWrapper.classList.contains('hide')) {
       vocabWrapper.classList.remove('hide');
@@ -186,6 +187,7 @@ class VocabularyCards {
     exitBtn.classList.add('hide');
     exitBtn.classList.remove('show');
     prevBtn.disabled = false;
+    nextBtn.disabled = false;
 
     this._vocabCard.remove();
   }
