@@ -83,6 +83,17 @@ class Categories {
       categoryBtn.innerHTML = this._categories[i];
       categoryWrapper.appendChild(categoryBtn);
     }
+    this.renderHowTo();
+  }
+
+  renderHowTo(){
+    const infoText = `<li>Navigate using the prev and next buttons.</li>
+    <li>Tap/click the vocabulary card to see the translation.</li>`
+    let infoContainer =  document.createElement('ul');
+    infoContainer.classList.add('info');
+    infoContainer.innerHTML = infoText;
+
+    categoryWrapper.appendChild(infoContainer);
   }
 }
 
@@ -174,6 +185,7 @@ class VocabularyCards {
 
     exitBtn.classList.add('hide');
     exitBtn.classList.remove('show');
+    prevBtn.disabled = false;
 
     this._vocabCard.remove();
   }
