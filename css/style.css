@@ -105,3 +105,76 @@ h1 {
 #exit {
   margin-left: 10px;
 }
+
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+  .vocabulary__category {
+    width: 800px;
+    height: 200px;
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    line-height: 200px;
+    border-radius: 20px;
+  }
+
+  #vocabulary__wrapper {
+    width: 100%;
+  }
+
+  .vocabulary__card {
+    border: 4px solid #ff7400;
+    height: 550px;
+    width: 750px;
+    border-radius: 20px;
+  }
+
+  .vocabulary__text {
+    font-size: 4.5rem;
+  }
+
+  #next, #prev, #exit {
+    border: 3px solid #ff7400;
+    cursor: pointer;
+    line-height: 50px;
+    border-radius: 5px;
+    background: #fff;
+    font-size: 1rem;
+  }
+
+  #next, #prev {
+    left: 80%;
+    top: 100%;
+    position: absolute;
+    height: 150px;
+    width: 300px;
+    font-size: 2rem;
+    margin-top: 20px;
+  }
+
+  #next {
+    left: 60%;
+  }
+
+  #prev {
+    left: 8%;
+  }
+
+  #exit {
+    height: 100px;
+    width: 200px;
+    font-size: 2rem;
+  }
+
+  .vocabulary__title {
+    width: 100%;
+    margin-bottom: 80px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 5rem;
+  }
+
+}
